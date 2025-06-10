@@ -22,4 +22,6 @@ jobs:
           7z x a.7z
 
       - name: Test
-        run: .\ezstore.exe -v
+        run: |
+          .\ezstore.exe install 9p53pc5s0phj --verbosity d
+          ls
