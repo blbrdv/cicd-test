@@ -19,5 +19,5 @@ jobs:
       - name: Download app
         run: |
           Invoke-WebRequest -Uri "https://github.com/blbrdv/ezstore/releases/download/v1.3.2/ezstore-portable.7z" -OutFile a.7z
-          7z x .\a.zip
+          7z x a.7z
           ls
