@@ -23,5 +23,5 @@ jobs:
 
       - name: Test
         run: |
-          .\ezstore.exe install 9p53pc5s0phj --verbosity d
-          msstore info
+          .\ezstore.exe install xp8k0hkjfrxgck --verbosity d
+          oh-my-posh version
