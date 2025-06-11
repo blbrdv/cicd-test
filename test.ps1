@@ -26,7 +26,8 @@ function Compare-Output {
     }
 
     for ( $i = 0; $i -lt $Actual.Count; $i++ ) {
-        Write-Host "Line #${$i + 1}";
+        $Num = $i + 1;
+        Write-Host "Line #$Num";
         Write-Host "Expected: ${$Expected[$i]}";
         Write-Host "Actual:   ${$Actual[$i]}";
 
