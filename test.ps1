@@ -21,23 +21,16 @@ function Compare-Output {
         throw "Invalid argument";
     }
 
-    echo $Actual.Count;
-    echo $Expected.Count;
-
-#     if ( $Actual.Count -ne $Expected.Count ) {
-#         throw "Lengths of arrays must be equal. Expected ${Expected.Count}, actual ${Actual.Count}";
-#     }
+    if ( $Actual.Count -ne $Expected.Count ) {
+        throw "Lengths of arrays must be equal. Expected ${$Expected.Count}, actual ${$Actual.Count}";
+    }
 
     for ( $i = 0; $i -lt $Actual.Length; $i++ ) {
         $Left = $Actual[$i];
         $Right = $Expected[$i];
 
         if ( $Left -notmatch $Right ) {
-            Write-Error "Lines does not match.`n" +
-                    "Expected:`n" +
-                    "  $Right`n" +
-                    "Actual:`n" +
-                    "  $Left`n";
+            Write-Error "Lines does not match.`nExpected:`n  $Right`nActual:`n  $Left`n";
             throw "Lines does not match.";
         }
     }
