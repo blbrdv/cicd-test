@@ -22,7 +22,7 @@ function Compare-Output {
     }
 
     if ( $Actual.Length -ne $Expected.Length ) {
-        throw "Lengths of arrays must be equal";
+        throw "Lengths of arrays must be equal. Expected ${$Expected.Length}, actual ${$Actual.Length}";
     }
 
     for ( $i = 0; $i -lt $Actual.Length; $i++ ) {
