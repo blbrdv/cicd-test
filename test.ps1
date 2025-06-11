@@ -42,6 +42,7 @@ $Version = "v1.1.0.0";
 $InstallResult = Install $ID $Version;
 
 Compare
+    $InstallResult,
     @(
         '^[DEB] Trace file: .:[^.]\.log$',
         '^[DEB] Temp dir: .:\Users\[^\]\AppData\Local\Temp\ezstore\' + [regex]::Escape($ID) + '$',
@@ -55,14 +56,15 @@ Compare
         '^[INF] Product files downloaded$',
         '^[INF] Package ' + [regex]::Escape($Name) + ' ' + [regex]::Escape($Version) + ' installed.$',
         '^[SCC] Done!$'
-    ), $InstallResult;
+    );
 
 $AppResult = Run;
 
 Compare
+    $AppResult,
     @(
         '^Folder PATH listing for volume .*$'
         '^Volume serial number is .*$'
         '^.:.*$'
         '^No subfolders exist $'
-    ), $AppResult;
+    );
