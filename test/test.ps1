@@ -2,10 +2,13 @@ Set-StrictMode -Version 3.0;
 $ErrorActionPreference = "Stop";
 trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 
+$CurrentPath = Split-Path -parent $MyInvocation.MyCommand.Definition;
+Write-Host "Current path: $CurrentPath";
+
 ###### IMPORT
 
-. ".\test\install.ps1"
-. ".\test\app.ps1"
+. "$CurrentPath\test\install.ps1"
+. "$CurrentPath\test\app.ps1"
 
 ###### UTILS
 
@@ -66,7 +69,7 @@ $Expected = @(
     "^\[INF\] Package $([regex]::Escape($Name)) $([regex]::Escape($Version)) installed.$",
     '^\[SCC\] Done!$'
 );
-$Actual = Install $ID $Version;
+$Actual = Install $CurrentPath $ID $Version;
 
 Compare-Output $Expected $Actual;
 
@@ -82,6 +85,6 @@ $Expected = @(
      '^.*$'
      '^No subfolders exist $'
  );
-$Actual = Run;
+$Actual = Run $CurrentPath;
 
 Compare-Output $Expected $Actual;
