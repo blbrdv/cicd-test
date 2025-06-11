@@ -23,5 +23,8 @@ jobs:
 
       - name: Test
         run: |
-          .\ezstore.exe install xp8k0hkjfrxgck --verbosity d
-          oh-my-posh version
+          $ErrorActionPreference = "Stop"
+          trap { Write-Error $_ -ErrorAction Continue; exit 1 }
+          
+          .\ezstore.exe install 9mvsm3j7zj7c --verbosity d
+          tree version
