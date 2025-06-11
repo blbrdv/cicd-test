@@ -48,6 +48,10 @@ $Version = "v1.1.0.0";
 
 ###### TEST 1
 
+Write-Host;
+Write-Host "====== TEST 1 ======";
+Write-Host;
+
 $Expected = @(
     '^\[DEB\] Trace file: .*\.log$',
     "^\[DEB\] Temp dir: .:\\Users\\.*\\AppData\\Local\\Temp\\ezstore\\$([regex]::Escape($ID))$",
@@ -67,6 +71,10 @@ $Actual = Install $ID $Version;
 Compare-Output $Expected $Actual;
 
 ###### TEST 2
+
+Write-Host;
+Write-Host "====== TEST 2 ======";
+Write-Host;
 
 $Expected = @(
      '^Folder PATH listing for volume .*$'

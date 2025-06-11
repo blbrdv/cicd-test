@@ -26,4 +26,4 @@ jobs:
           7z x a.7z
 
       - name: Test
-        run: .\test.ps1
+        run: .\test\test.ps1
