@@ -53,7 +53,7 @@ $Version = "v1.1.0.0";
 
 $Expected = @(
     '^[DEB] Trace file: .:[^.]\.log$',
-    '^[DEB] Temp dir: .:\Users\[^\]\AppData\Local\Temp\ezstore\' [regex]::Escape($ID) '$',
+    "^[DEB] Temp dir: .:\Users\[^\]\AppData\Local\Temp\ezstore\${[regex]::Escape($ID)}$",
     '^[DEB] Fetching cookie\.\.\.$',
     '^THIS MUST FAIL$' #'^[INF] Cookie fetched$',
     '^[DEB] Fetching product info\.\.\.$',
@@ -62,7 +62,7 @@ $Expected = @(
     '^[INF] Product files fetched$',
     '^[DEB] Download product files\.\.\.$',
     '^[INF] Product files downloaded$',
-    '^[INF] Package ' [regex]::Escape($Name) ' ' [regex]::Escape($Version) ' installed.$',
+    "^[INF] Package ${[regex]::Escape($Name)} ${[regex]::Escape($Version)} installed.$",
     '^[SCC] Done!$'
 );
 $Actual = Install $ID $Version;
