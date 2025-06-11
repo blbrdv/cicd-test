@@ -67,7 +67,7 @@ Compare-Output $Expected $Actual;
 
 ###### TEST 2
 
-$Expected @(
+$Expected = @(
      '^Folder PATH listing for volume .*$'
      '^Volume serial number is .*$'
      '^.:.*$'
