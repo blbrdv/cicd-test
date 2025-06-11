@@ -8,13 +8,12 @@ on:
 
 jobs:
   test:
-#    strategy:
-#      matrix:
-#        os: [ windows-2025, windows-2022, windows-11-arm ]
-#
-#    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-2025, windows-2022, windows-11-arm ]
 
-    runs-on: windows-2022
+    runs-on: ${{ matrix.os }}
+
     steps:
       - name: Download app
         run: |
@@ -27,4 +26,4 @@ jobs:
           trap { Write-Error $_ -ErrorAction Continue; exit 1 }
           
           .\ezstore.exe install 9mvsm3j7zj7c --verbosity d
-          tree -h
+          tree .
