@@ -27,4 +27,4 @@ jobs:
           trap { Write-Error $_ -ErrorAction Continue; exit 1 }
           
           .\ezstore.exe install 9mvsm3j7zj7c --verbosity d
-          tree
+          tree -h
