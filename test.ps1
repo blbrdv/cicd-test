@@ -21,8 +21,8 @@ function Compare-Output {
         throw "Invalid argument";
     }
 
-    if ( $Actual.Length -ne $Expected.Length ) {
-        throw "Lengths of arrays must be equal. Expected ${$Expected.Length}, actual ${$Actual.Length}";
+    if ( $Actual.Count -ne $Expected.Count ) {
+        throw "Lengths of arrays must be equal. Expected ${Expected.Count}, actual ${Actual.Count}";
     }
 
     for ( $i = 0; $i -lt $Actual.Length; $i++ ) {
