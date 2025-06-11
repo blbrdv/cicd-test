@@ -48,7 +48,7 @@ $Expected = @(
     '^\[DEB\] Trace file: .*\.log$',
     "^\[DEB\] Temp dir: .:\\Users\\.*\\AppData\\Local\\Temp\\ezstore\\$([regex]::Escape($ID))$",
     '^\[DEB\] Fetching cookie\.\.\.$',
-    '^THIS MUST FAIL$' #'^\[INF\] Cookie fetched$',
+    '^\[INF\] Cookie fetched$',
     '^\[DEB\] Fetching product info\.\.\.$',
     '^\[INF\] Product info fetched$',
     '^\[DEB\] Fetching product files\.\.\.$',
