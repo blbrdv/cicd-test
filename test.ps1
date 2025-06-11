@@ -22,6 +22,10 @@ function Compare-Output {
     }
 
     if ( $Actual.Count -ne $Expected.Count ) {
+        Write-Host "Actual output:";
+        for ( $i = 0; $i -lt $Actual.Count; $i++ ) {
+            Write-Host "$($i + 1): $($Actual[$i])";
+        }
         throw "Lengths of arrays must be equal. Expected $($Expected.Count), actual $($Actual.Count)";
     }
 
