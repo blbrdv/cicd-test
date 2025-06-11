@@ -42,6 +42,8 @@ $ID = "9mvsm3j7zj7c";
 $Name = "PeterEtelej.TreeCLI"
 $Version = "v1.1.0.0";
 
+Write-Host "TEST: $('[DEB] Trace file: C:\a\cicd-test\cicd-test\250611043212.log' -match '^\[DEB\] Trace file: .*\.log$')";
+
 ###### TEST 1
 
 $Expected = @(
