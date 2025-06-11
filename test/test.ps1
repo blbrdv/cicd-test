@@ -12,8 +12,10 @@ trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 function Compare-Output {
     Param (
         [Parameter(Mandatory=$true,Position=0)]
+        [AllowEmptyString()]
         [string[]]$Expected,
         [Parameter(Mandatory=$true,Position=1)]
+        [AllowEmptyString()]
         [string[]]$Actual
     )
 
@@ -81,7 +83,7 @@ $Expected = @(
      '^Volume serial number is .*$',
      '^.*$',
      '^No subfolders exist $',
-     '^$'
+     ''
  );
 $Actual = Run;
 
