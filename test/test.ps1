@@ -4,8 +4,8 @@ trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 
 ###### IMPORT
 
-. ".\install.ps1"
-. ".\app.ps1"
+. ".\test\install.ps1"
+. ".\test\app.ps1"
 
 ###### UTILS
 
