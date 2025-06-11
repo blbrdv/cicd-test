@@ -1,16 +1,20 @@
 Set-StrictMode -Version 3.0;
 $ErrorActionPreference = "Stop";
-trap { Write-Error $_ -ErrorAction Continue; exit 1 }
+trap { Write-Error $_ -ErrorAction Continue; exit 1 };
+
+###### IMPORT
 
 . ".\install.ps1"
 . ".\app.ps1"
 
-function Compare {
+###### UTILS
+
+function Compare-Output {
     Param (
         [Parameter(Mandatory=$true,Position=0)]
-        [string[]]$Actual,
+        [string[]]$Expected,
         [Parameter(Mandatory=$true,Position=1)]
-        [string[]]$Expected
+        [string[]]$Actual
     )
 
     if ( ($null -eq $Actual) -or ($null -eq $Expected) ) {
@@ -35,36 +39,40 @@ function Compare {
     }
 }
 
+###### DATA
+
 $ID = "9mvsm3j7zj7c";
 $Name = "PeterEtelej.TreeCLI"
 $Version = "v1.1.0.0";
 
-$InstallResult = Install $ID $Version;
+###### TEST 1
 
-Compare
-    $InstallResult,
-    @(
-        '^[DEB] Trace file: .:[^.]\.log$',
-        '^[DEB] Temp dir: .:\Users\[^\]\AppData\Local\Temp\ezstore\' + [regex]::Escape($ID) + '$',
-        '^[DEB] Fetching cookie\.\.\.$',
-        '^THIS MUST FAIL$' #'^[INF] Cookie fetched$',
-        '^[DEB] Fetching product info\.\.\.$',
-        '^[INF] Product info fetched$',
-        '^[DEB] Fetching product files\.\.\.$',
-        '^[INF] Product files fetched$',
-        '^[DEB] Download product files\.\.\.$',
-        '^[INF] Product files downloaded$',
-        '^[INF] Package ' + [regex]::Escape($Name) + ' ' + [regex]::Escape($Version) + ' installed.$',
-        '^[SCC] Done!$'
-    );
+$Expected = @(
+    '^[DEB] Trace file: .:[^.]\.log$',
+    '^[DEB] Temp dir: .:\Users\[^\]\AppData\Local\Temp\ezstore\' + [regex]::Escape($ID) + '$',
+    '^[DEB] Fetching cookie\.\.\.$',
+    '^THIS MUST FAIL$' #'^[INF] Cookie fetched$',
+    '^[DEB] Fetching product info\.\.\.$',
+    '^[INF] Product info fetched$',
+    '^[DEB] Fetching product files\.\.\.$',
+    '^[INF] Product files fetched$',
+    '^[DEB] Download product files\.\.\.$',
+    '^[INF] Product files downloaded$',
+    '^[INF] Package ' + [regex]::Escape($Name) + ' ' + [regex]::Escape($Version) + ' installed.$',
+    '^[SCC] Done!$'
+);
+$Actual = Install $ID $Version;
 
-$AppResult = Run;
+Compare-Output $Expected $Actual;
 
-Compare
-    $AppResult,
-    @(
-        '^Folder PATH listing for volume .*$'
-        '^Volume serial number is .*$'
-        '^.:.*$'
-        '^No subfolders exist $'
-    );
+###### TEST 2
+
+$Expected @(
+     '^Folder PATH listing for volume .*$'
+     '^Volume serial number is .*$'
+     '^.:.*$'
+     '^No subfolders exist $'
+ );
+$Actual = Run;
+
+Compare-Output $Expected $Actual;
