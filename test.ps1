@@ -2,9 +2,38 @@ Set-StrictMode -Version 3.0;
 $ErrorActionPreference = "Stop";
 trap { Write-Error $_ -ErrorAction Continue; exit 1 }
 
-. ".\core.ps1"
 . ".\install.ps1"
 . ".\app.ps1"
+
+function Compare {
+    Param (
+        [Parameter(Mandatory=$true,Position=0)]
+        [string[]]$Actual,
+        [Parameter(Mandatory=$true,Position=1)]
+        [string[]]$Expected
+    )
+
+    if ( ($null -eq $Actual) -or ($null -eq $Expected) ) {
+        throw "Invalid argument";
+    }
+
+    if ( $Actual.Length -ne $Expected.Length ) {
+        throw "Lengths of arrays must be equal";
+    }
+
+    for ( $i = 0; $i -lt $Actual.Length; $i++ ) {
+        $Left = $Actual[i];
+        $Right = $Expected[i];
+
+        if ( $Left -notmatch $Right ) {
+            throw "Lines does not match.`n" +
+                    "Expected:`n" +
+                    "  $Right`n" +
+                    "Actual:`n" +
+                    "  $Left`n";
+        }
+    }
+}
 
 $ID = "9mvsm3j7zj7c";
 $Name = "PeterEtelej.TreeCLI"
@@ -12,7 +41,7 @@ $Version = "v1.1.0.0";
 
 $InstallResult = Install $ID $Version;
 
-Test
+Compare
     @(
         '^[DEB] Trace file: .:[^.]\.log$',
         '^[DEB] Temp dir: .:\Users\[^\]\AppData\Local\Temp\ezstore\' + [regex]::Escape($ID) + '$',
@@ -30,7 +59,7 @@ Test
 
 $AppResult = Run;
 
-Test
+Compare
     @(
         '^Folder PATH listing for volume .*$'
         '^Volume serial number is .*$'
