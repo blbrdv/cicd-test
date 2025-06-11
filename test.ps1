@@ -22,13 +22,13 @@ function Compare-Output {
     }
 
     if ( $Actual.Count -ne $Expected.Count ) {
-        throw "Lengths of arrays must be equal. Expected ${$Expected.Count}, actual ${$Actual.Count}";
+        throw "Lengths of arrays must be equal. Expected $($Expected.Count), actual $($Actual.Count)";
     }
 
     for ( $i = 0; $i -lt $Actual.Count; $i++ ) {
-        Write-Host "Line #${i + 1}";
-        Write-Host "Expected: ${Expected[$i]}";
-        Write-Host "Actual:   ${Actual[$i]}";
+        Write-Host "Line #$(i + 1)";
+        Write-Host "Expected: $($Expected[$i])";
+        Write-Host "Actual:   $($Actual[$i])";
 
         if ( $Actual[$i] -notmatch $Expected[$i] ) {
             throw "Lines does not match.";
