@@ -25,13 +25,17 @@ function Compare-Output {
         throw "Lengths of arrays must be equal. Expected ${$Expected.Count}, actual ${$Actual.Count}";
     }
 
-    for ( $i = 0; $i -lt $Actual.Length; $i++ ) {
+    for ( $i = 0; $i -lt $Actual.Count; $i++ ) {
         $Left = $Actual[$i];
         $Right = $Expected[$i];
 
         if ( $Left -notmatch $Right ) {
-            Write-Error "Lines does not match.`nExpected:`n  $Right`nActual:`n  $Left`n";
-            throw "Lines does not match.";
+            Write-Host "Lines #$i does not match.`nExpected:`n  $Right`nActual:`n  $Left`n";
+            Write-Host "Full output:"
+            for ( $j = 0; $j - lt $Actual.Count; $j++ ) {
+                Write-Host "$j: ${$Actual[$j]}";
+            }
+            throw "Lines #$i does not match.";
         }
     }
 }
