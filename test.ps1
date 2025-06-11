@@ -42,13 +42,11 @@ $ID = "9mvsm3j7zj7c";
 $Name = "PeterEtelej.TreeCLI"
 $Version = "v1.1.0.0";
 
-Write-Host "TEST: $('[DEB] Trace file: C:\a\cicd-test\cicd-test\250611043212.log' -match '^\[DEB\] Trace file: .*\.log$')";
-
 ###### TEST 1
 
 $Expected = @(
     '^\[DEB\] Trace file: .*\.log$',
-    "^\[DEB\] Temp dir: .:\Users\[^\]\AppData\Local\Temp\ezstore\$([regex]::Escape($ID))$",
+    "^\[DEB\] Temp dir: .:\\Users\\.*\\AppData\\Local\\Temp\\ezstore\\$([regex]::Escape($ID))$",
     '^\[DEB\] Fetching cookie\.\.\.$',
     '^THIS MUST FAIL$' #'^\[INF\] Cookie fetched$',
     '^\[DEB\] Fetching product info\.\.\.$',
