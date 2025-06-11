@@ -12,5 +12,7 @@ function Install {
         throw "ezstore exit with code ${LastExitCode}";
     }
 
+    $Result = $Result -replace '\x1b\[[0-9;]*m';
+
     return $Result.Split("\n");
 }
