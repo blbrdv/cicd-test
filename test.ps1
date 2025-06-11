@@ -32,7 +32,7 @@ function Compare-Output {
         if ( $Left -notmatch $Right ) {
             Write-Host "Lines #$i does not match.`nExpected:`n  $Right`nActual:`n  $Left`n";
             Write-Host "Full output:"
-            for ( $j = 0; $j - lt $Actual.Count; $j++ ) {
+            for ( $j = 0; $j -lt $Actual.Count; $j++ ) {
                 Write-Host "$j: ${$Actual[$j]}";
             }
             throw "Lines #$i does not match.";
