@@ -6,7 +6,7 @@ function Install {
         [string]$Version
     )
 
-    $Result = & ..\ezstore.exe install $ID --ver $Version --verbosity d 2>&1;
+    $Result = & .\ezstore.exe install $ID --ver $Version --verbosity d 2>&1;
 
     if ( $LastExitCode -ne 0 ) {
         throw "ezstore exit with code ${LastExitCode}";

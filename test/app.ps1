@@ -1,6 +1,6 @@
 function Run {
 
-    $Result = & tree . 2>&1;
+    $Result = & tree test 2>&1;
 
     if ( $LastExitCode -ne 0 ) {
         throw "app exit with code ${LastExitCode}";
