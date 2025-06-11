@@ -26,16 +26,12 @@ function Compare-Output {
     }
 
     for ( $i = 0; $i -lt $Actual.Count; $i++ ) {
-        $Left = $Actual[$i];
-        $Right = $Expected[$i];
+        Write-Host "Line #${$i + 1}";
+        Write-Host "Expected: ${$Expected[$i]}";
+        Write-Host "Actual:   ${$Actual[$i]}";
 
-        if ( $Left -notmatch $Right ) {
-            Write-Host "Lines #$i does not match.`nExpected:`n  $Right`nActual:`n  $Left`n";
-            Write-Host "Full output:"
-            for ( $j = 0; $j -lt $Actual.Count; $j++ ) {
-                Write-Host "$j: ${$Actual[$j]}";
-            }
-            throw "Lines #$i does not match.";
+        if ( $Actual[$i] -notmatch $Expected[$i] ) {
+            throw "Lines does not match.";
         }
     }
 }
