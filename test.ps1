@@ -2,6 +2,9 @@ Set-StrictMode -Version 3.0;
 $ErrorActionPreference = "Stop";
 trap { Write-Error $_ -ErrorAction Continue; exit 1 }
 
+. ".\install.ps1"
+. ".\app.ps1"
+
 $ID = "9mvsm3j7zj7c";
 $Name = "PeterEtelej.TreeCLI"
 $Version = "v1.1.0.0";
