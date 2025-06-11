@@ -77,10 +77,11 @@ Write-Host "====== TEST 2 ======";
 Write-Host;
 
 $Expected = @(
-     '^Folder PATH listing for volume .*$'
-     '^Volume serial number is .*$'
-     '^.*$'
-     '^No subfolders exist $'
+     '^Folder PATH listing for volume .*$',
+     '^Volume serial number is .*$',
+     '^.*$',
+     '^No subfolders exist $',
+     '^$'
  );
 $Actual = Run;
 
