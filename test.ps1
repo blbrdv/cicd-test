@@ -22,8 +22,8 @@ function Compare {
     }
 
     for ( $i = 0; $i -lt $Actual.Length; $i++ ) {
-        $Left = $Actual[i];
-        $Right = $Expected[i];
+        $Left = $Actual[$i];
+        $Right = $Expected[$i];
 
         if ( $Left -notmatch $Right ) {
             throw "Lines does not match.`n" +
