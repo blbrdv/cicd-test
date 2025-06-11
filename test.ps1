@@ -6,6 +6,8 @@ $ID = "9mvsm3j7zj7c";
 $Name = "PeterEtelej.TreeCLI"
 $Version = "v1.1.0.0";
 
+$InstallResult = Install $ID $Version;
+
 Test
     @(
         '[DEB] Trace file: .:[^.]\.log',
@@ -20,8 +22,9 @@ Test
         '[INF] Product files downloaded',
         '[INF] Package ' + [regex]::Escape($Name) + ' ' + [regex]::Escape($Version) + ' installed.',
         '[SCC] Done!'
-    ),
-    Install $ID $Version;
+    ), $InstallResult;
+
+$AppResult = App;
 
 Test
     @(
@@ -29,5 +32,4 @@ Test
         'Volume serial number is .*'
         '.:.*'
         'No subfolders exist '
-    ),
-    App;
+    ), $AppResult;
