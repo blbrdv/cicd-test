@@ -2,7 +2,7 @@ Set-StrictMode -Version 3.0;
 $ErrorActionPreference = "Stop";
 trap { Write-Error $_ -ErrorAction Continue; exit 1 }
 
-. ".\test.ps1"
+. ".\core.ps1"
 . ".\install.ps1"
 . ".\app.ps1"
 
