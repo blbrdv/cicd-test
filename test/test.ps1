@@ -85,6 +85,6 @@ $Expected = @(
  );
 $Actual = Run;
 
-Write-Line "Actual: $Actual";
+Write-Host "Actual: $Actual";
 
 Compare-Output $Expected $Actual;
