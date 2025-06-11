@@ -26,10 +26,9 @@ function Compare-Output {
     }
 
     for ( $i = 0; $i -lt $Actual.Count; $i++ ) {
-        $Num = $i + 1;
-        Write-Host "Line #$Num";
-        Write-Host "Expected: ${$Expected[$i]}";
-        Write-Host "Actual:   ${$Actual[$i]}";
+        Write-Host "Line #${i + 1}";
+        Write-Host "Expected: ${Expected[$i]}";
+        Write-Host "Actual:   ${Actual[$i]}";
 
         if ( $Actual[$i] -notmatch $Expected[$i] ) {
             throw "Lines does not match.";
