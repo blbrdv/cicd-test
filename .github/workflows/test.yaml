@@ -9,21 +9,19 @@ on:
 jobs:
   test:
     strategy:
+      fail-fast: false
       matrix:
         os: [ windows-2025, windows-2022, windows-11-arm ]
 
     runs-on: ${{ matrix.os }}
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Download app
         run: |
           Invoke-WebRequest -Uri "https://github.com/blbrdv/ezstore/releases/download/v1.3.2/ezstore-portable.7z" -OutFile a.7z
           7z x a.7z
 
       - name: Test
-        run: |
-          $ErrorActionPreference = "Stop"
-          trap { Write-Error $_ -ErrorAction Continue; exit 1 }
-          
-          .\ezstore.exe install 9mvsm3j7zj7c --verbosity d
-          tree .
+        run: .\test.ps1
