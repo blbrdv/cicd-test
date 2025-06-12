@@ -13,17 +13,8 @@ $U = @(
     'HKCU:\SOFTWARE\Wow6432node\Microsoft\Windows\CurrentVersion\Uninstall\*'
 );
 
-$results = foreach ($UKey in $U) {
+foreach ($UKey in $U) {
     foreach ($Product in (Get-ItemProperty $UKey -ErrorAction SilentlyContinue)) {
-        if ( $Product -contains "DisplayName" ) {
-            [PSCustomObject]@{
-                DisplayName = $Product.DisplayName;
-                DisplayVersion = $Product.DisplayVersion;
-                Publisher = $Product.Publisher;
-                InstallDate = $Product.InstallDate
-            };
-        }
+        $Product | Format-Table -AutoSize;
     }
 };
-
-$results | Format-Table -AutoSize;
