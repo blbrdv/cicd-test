@@ -6,4 +6,5 @@ trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 
 Write-Host "======";
 
-gci env:Path | %{$_.Value.Split(';')}
+Import-Module -Name Appx -UseWindowsPowerShell -WarningAction SilentlyContinue;
+Get-AppxPackage;
