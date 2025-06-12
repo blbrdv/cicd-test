@@ -6,10 +6,6 @@ trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 
 Write-Host "======";
 
-gcm tree
-
-Write-Host "======";
-
 $U = @(
     'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*',
     'HKLM:\SOFTWARE\Wow6432node\Microsoft\Windows\CurrentVersion\Uninstall\*',
@@ -19,7 +15,7 @@ $U = @(
 
 $results = foreach ($UKey in $U) {
     foreach ($Product in (Get-ItemProperty $UKey -ErrorAction SilentlyContinue)) {
-        if ( ($Product -contains "DisplayName") -and ($Product -contains "SystemComponent") ) {
+        if ( $Product -contains "DisplayName" ) {
             [PSCustomObject]@{
                 DisplayName = $Product.DisplayName;
                 DisplayVersion = $Product.DisplayVersion;
