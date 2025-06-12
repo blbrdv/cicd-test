@@ -6,7 +6,7 @@ trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 
 $Apps = Get-ChildItem HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall | foreach-object {Get-ItemProperty $_.PsPath}
 
-for ($App in $Apps) {
+foreach ($App in $Apps) {
     if ( [bool]($App -match "Displayname") ) {
         echo $App.Displayname;
     }
