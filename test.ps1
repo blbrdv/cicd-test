@@ -19,7 +19,7 @@ $U = @(
 
 $results = foreach ($UKey in $U) {
     foreach ($Product in (Get-ItemProperty $UKey -ErrorAction SilentlyContinue)) {
-        if ($Product.DisplayName -and $Product.SystemComponent -ne 1) {
+        if ( ($Product -contains "DisplayName") -and ($Product -contains "SystemComponent") ) {
             [PSCustomObject]@{
                 DisplayName = $Product.DisplayName;
                 DisplayVersion = $Product.DisplayVersion;
