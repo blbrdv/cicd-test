@@ -4,7 +4,7 @@ trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 
 $Id = "9mvsm3j7zj7c";
 $Name = "PeterEtelej.TreeCLI";
-$Version = "v1.1.0.0";
+$Version = "1.1.0.0";
 
 .\ezstore.exe install $Id --ver $Version --verbosity d
 
