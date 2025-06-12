@@ -6,8 +6,10 @@ $Id = "9mvsm3j7zj7c";
 $Name = "PeterEtelej.TreeCLI";
 $Version = "1.1.0.0";
 
+Write-Host "";
 .\ezstore.exe install $Id --ver $Version --verbosity d
 
+Write-Host "";
 Import-Module -Name Appx -UseWindowsPowerShell -WarningAction SilentlyContinue;
 
 $Package = Get-AppxPackage -Name $Name;
