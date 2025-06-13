@@ -11,23 +11,17 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        target:
-          - label: windows-2025
-            name: WIN 10 2025 (x64)
-          - label: windows-2022
-            name: WIN 10 2022 (x64)
-          - label: windows-11-arm
-            name: WIN 11 (ARM64)
+        os: [ windows-2025, windows-2022, windows-11-arm ]
         include:
-          - scenario: install
           - scenario: not-found
-            target.label: windows-2025
+            os: windows-2025
           - scenario: no-color
-            target.label: windows-2025
+            os: windows-2025
+          - scenario: install
 
-    runs-on: ${{ matrix.target.label }}
+    runs-on: ${{ matrix.os }}
 
-    name: Test '${{ matrix.scenario }}' on ${{ matrix.target.name }}
+    name: ${{ matrix.scenario }} (${{ matrix.os }})
 
     steps:
       - uses: actions/checkout@v4
