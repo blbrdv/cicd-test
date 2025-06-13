@@ -22,4 +22,4 @@ if ( $Package.Version -ne $Version ) {
     throw "Wrong version installed. Expected $Version, actual: $($Package.Version)."
 }
 
-Write-Host "$Name ($Id) $Version successfully installed!";
+Write-Host "Test passed!";
