@@ -7,7 +7,7 @@ trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 $Env:NO_COLOR = "1"
 $Output = Install $Data.Id $Data.Version;
 
-if ( $Output -match '\x1b\[[0-9;]*m' ) {
+if ( $Output -match $ColorRegexp ) {
     throw 'Output has colors.';
 }
 

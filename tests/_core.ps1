@@ -18,6 +18,8 @@ function Install {
 
 }
 
+$ColorRegexp = '\x1b\[[0-9;]*m';
+
 $Data = @{
     Id = "9mvsm3j7zj7c"
     Name = "PeterEtelej.TreeCLI"
