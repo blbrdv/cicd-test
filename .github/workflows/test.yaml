@@ -21,9 +21,9 @@ jobs:
         include:
           - scenario: install
           - scenario: not-found
-            label: windows-2025
+            target.label: windows-2025
           - scenario: no-color
-            label: windows-2025
+            target.label: windows-2025
 
     runs-on: ${{ matrix.target.label }}
 
