@@ -30,10 +30,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-#      - name: Download app
-#        run: |
-#          Invoke-WebRequest -Uri "https://github.com/blbrdv/ezstore/releases/download/v1.3.2/ezstore-portable.7z" -OutFile a.7z
-#          7z x a.7z
+      - name: Download app
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/blbrdv/ezstore/releases/download/v1.3.3/ezstore-portable.7z" -OutFile a.7z
+          7z x a.7z
 
       - name: Running scenario
         run: .\tests\${{ matrix.target.scenario }}.ps1
