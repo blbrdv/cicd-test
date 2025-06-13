@@ -1,0 +1,1 @@
+Test repo for testing Github workflows for [ezstore](https://github.com/blbrdv/ezstore) project.
