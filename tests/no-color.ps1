@@ -9,11 +9,10 @@ $Version = "1.1.0.0";
 Write-Host "";
 $Env:NO_COLOR = "1"
 $Output = .\bin\ezstore.exe install $Id --ver $Version --verbosity m 2>&1;
+Write-Host $Output;
 
 Write-Host "";
 if ( $Output -match '\x1b\[[0-9;]*m' ) {
-    Write-Host: "Output:";
-    Write-Host: $Output;
     throw 'Output has colors.';
 }
 
