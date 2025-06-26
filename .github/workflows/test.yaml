@@ -17,8 +17,9 @@ jobs:
     steps:
       - id: set-matrix
         run: |
-          echo 'matrix={"include": [{"label": "windows-latest", "name": "WINDOWS", "scenario": "first", "id": "123"}]}' | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          echo $env:GITHUB_OUTPUT
+          $JSON = 'matrix={"include": [{"label": "windows-latest", "name": "WINDOWS", "scenario": "first", "id": "123"}]}';
+          echo $JSON | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8;
+          echo $JSON;
 
   test:
     needs: build
