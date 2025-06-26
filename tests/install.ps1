@@ -2,20 +2,32 @@ Set-StrictMode -Version 3.0;
 $ErrorActionPreference = "Stop";
 trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory=$true,Position=0)]
+    [string]$Id
+)
+
 . ".\tests\_core.ps1";
 
-Install $Data.Id $Data.Version;
+$Target = $Targets[$Id];
+
+if ( $null -eq $Target ) {
+    throw "Unknow app ID: $Id"
+}
+
+Install $Id $Target.Version;
 
 Import-Module -Name Appx -UseWindowsPowerShell -WarningAction SilentlyContinue;
 
-$Package = Get-AppxPackage -Name $Data.Name;
+$Package = Get-AppxPackage -Name $Target.Name;
 
 if ( $null -eq $Package ) {
-    throw "Package $($Data.Name) not installed";
+    throw "Package $($Target.Name) not installed";
 }
 
-if ( $Package.Version -ne $Data.Version ) {
-    throw "Wrong version installed. Expected $($Data.Version), actual: $($Package.Version)."
+if ( $Package.Version -ne $Target.Version ) {
+    throw "Wrong version installed. Expected $($Target.Version), actual: $($Package.Version)."
 }
 
 Write-Host "Test passed!";
