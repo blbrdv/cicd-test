@@ -26,12 +26,12 @@ jobs:
             if ( $null -eq $Target['label'] ) {
           
               foreach ( $Os in $Targets ) {
-                $Include.Add(@{
+                $Include += @{
                   label = $Os.label
                   name = $Os.name
                   scenario = $Target.scenario
                   id = $Target.id
-                });
+                };
               }
 
             }
@@ -46,11 +46,11 @@ jobs:
                 }
               }
           
-              $Include.Add(@{
+              $Include += @{
                 label = $Target.label
                 name = $Name
                 scenario = $Target.scenario
-              });
+              };
             }
           }
           
