@@ -27,8 +27,8 @@ jobs:
               if ( $Target.label -eq $Os.label ) {
                 $Include += @{
                   label = $Os.label
-                  name = $Os.name
-                  scenario = $Target.scenario
+                  name = "'$($Target.scenario)'on $($Os.name)"
+                  run = ".\tests\$($Target.scenario).ps1"
                 };
               }
             }
@@ -38,9 +38,8 @@ jobs:
             foreach ( $Os in $Data.os ) {
               $Include += @{
                 label = $Os.label
-                name = $Os.name
-                scenario = "install"
-                id = $Install.id
+                name = "'$($Target.scenario) $($Install.id)'on $($Os.name)"
+                run = ".\tests\install.ps1 $($Install.id)"
               }; 
             }
           }
@@ -59,7 +58,7 @@ jobs:
 
     runs-on: ${{ matrix.label }}
 
-    name: "'${{ matrix.scenario }}' on ${{ matrix.name }}"
+    name: ${{ matrix.name }}
 
     steps:
-      - run: echo "${{ matrix.scenario }} ${{ matrix.id }}"
+      - run: ${{ matrix.run }}
