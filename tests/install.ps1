@@ -1,8 +1,11 @@
+param (
+    [Parameter(Mandatory=$true,Position=0)]
+    [string]$Id
+)
+
 Set-StrictMode -Version 3.0;
 $ErrorActionPreference = "Stop";
 trap { Write-Error $_ -ErrorAction Continue; exit 1 };
-
-param ($Id)
 
 . ".\tests\_core.ps1";
 
