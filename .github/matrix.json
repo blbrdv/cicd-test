@@ -1,0 +1,22 @@
+{
+  "os": [
+    {
+      "label": "asd",
+      "name": "aboba"
+    },
+    {
+      "label": "oypoy",
+      "name": "ayyyy"
+    }
+  ],
+  "include": [
+    {
+      "label": "asd",
+      "scenario": "123"
+    },
+    {
+      "scenario": "456",
+      "id": "cock"
+    }
+  ]
+}

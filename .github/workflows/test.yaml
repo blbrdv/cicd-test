@@ -15,11 +15,51 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
 
     steps:
+      - uses: actions/checkout@v4
+
       - id: set-matrix
         run: |
-          $JSON = 'matrix={"include": [{"label": "windows-latest", "name": "WINDOWS", "scenario": "first", "id": "123"}]}';
-          echo $JSON | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8;
+          $Data = Get-Content -Raw '.\.github\matrix.json' | ConvertFrom-Json;
+          $Include = @();
+          $Targets = $Data.os;
+          foreach ( $Target in $Data.include ) {
+            if ( $null -eq $Target['label'] ) {
+          
+              foreach ( $Os in $Targets ) {
+                $Include.Add(@{
+                  label = $Os.label
+                  name = $Os.name
+                  scenario = $Target.scenario
+                  id = $Target.id
+                });
+              }
+
+            }
+            else 
+            {
+              $Name = "";
+          
+              foreach ( $Os in $Targets ) {
+                if ( $Os.label -eq $Target.label ) {
+                  $Name = $Os.name;
+                  break;
+                }
+              }
+          
+              $Include.Add(@{
+                label = $Target.label
+                name = $Name
+                scenario = $Target.scenario
+              });
+            }
+          }
+          
+          $IncludeJSON = $Include | ConvertTo-JSON;
+          echo $IncludeJSON;
+          
+          $JSON = 'matrix={"include": $$IncludeJSON}';
           echo $JSON;
+          echo $JSON | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8;
 
   test:
     needs: build
