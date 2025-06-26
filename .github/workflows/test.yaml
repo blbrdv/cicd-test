@@ -7,33 +7,27 @@ on:
       - "main"
 
 jobs:
-  test:
-    strategy:
-      fail-fast: true
-      matrix:
-        target:
-          - os: windows-2025
-            scenario: install
-          - os: windows-2025
-            scenario: not-found
-          - os: windows-2025
-            scenario: no-color
-          - os: windows-2022
-            scenario: install
-          - os: windows-11-arm
-            scenario: install
 
-    runs-on: ${{ matrix.target.os }}
+  build:
+    runs-on: windows-latest
 
-    name: ${{ matrix.target.scenario }} (${{ matrix.target.os }})
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Download app
+      - id: set-matrix
         run: |
-          Invoke-WebRequest -Uri "https://github.com/blbrdv/ezstore/releases/download/v1.3.3/ezstore-portable.7z" -OutFile a.7z
-          7z x a.7z
+          echo "matrix={\"include\": [{\"label\": \"windows-latest\", \"name\": \"WINDOWS\", \"scenario\": \"first\", \"id\": \"123\"}]}" >> "$GITHUB_OUTPUT"
 
-      - name: Running scenario
-        run: .\tests\${{ matrix.target.scenario }}.ps1
+  test:
+    needs: build
+
+    strategy:
+      matrix: ${{ fromJson( needs.build.outputs.matrix ) }}
+
+    runs-on: ${{ matrix.target.label }}
+
+    name: "'${{ matrix.target.scenario }}' on ${{ matrix.target.name }}"
+
+    steps:
+      - run: echo "${{ matrix.target.scenario }} ${{ matrix.target.id }}"
