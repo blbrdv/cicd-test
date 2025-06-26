@@ -54,6 +54,7 @@ jobs:
     needs: build
 
     strategy:
+      fail-fast: false
       matrix: ${{ fromJson( needs.build.outputs.matrix ) }}
 
     runs-on: ${{ matrix.label }}
