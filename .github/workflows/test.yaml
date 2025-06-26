@@ -50,7 +50,7 @@ jobs:
           $MatrixJSON = $Include | ConvertTo-JSON;
           echo $MatrixJSON;
           
-          $JSON = 'matrix=$MatrixJSON';
+          $JSON = "matrix=$MatrixJSON";
           echo $JSON;
           echo $JSON | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8;
 
