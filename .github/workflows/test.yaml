@@ -23,6 +23,8 @@ jobs:
           $Include = @();
           $Targets = $Data.os;
           foreach ( $Target in $Data.include ) {
+            echo $Target;
+
             if ( $null -eq $Target['label'] ) {
           
               foreach ( $Os in $Targets ) {
@@ -57,7 +59,7 @@ jobs:
           $IncludeJSON = $Include | ConvertTo-JSON;
           echo $IncludeJSON;
           
-          $JSON = 'matrix={"include": $$IncludeJSON}';
+          $JSON = 'matrix={"include": $IncludeJSON}';
           echo $JSON;
           echo $JSON | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8;
 
