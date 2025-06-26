@@ -9,13 +9,14 @@
       "name": "ayyyy"
     }
   ],
-  "include": [
+  "targets": [
     {
       "label": "asd",
       "scenario": "123"
-    },
+    }
+  ],
+  "install": [
     {
-      "scenario": "456",
       "id": "cock"
     }
   ]
