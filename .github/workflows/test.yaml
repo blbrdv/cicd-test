@@ -28,7 +28,7 @@ jobs:
                 $Include += @{
                   label = $Os.label
                   name = "'$($Target.scenario)'on $($Os.name)"
-                  run = "& .\tests\$($Target.scenario).ps1"
+                  run = ".\tests\$($Target.scenario).ps1"
                 };
               }
             }
@@ -39,7 +39,7 @@ jobs:
               $Include += @{
                 label = $Os.label
                 name = "'install $($Install.id)'on $($Os.name)"
-                run = "& .\tests\install.ps1 $($Install.id)"
+                run = ".\tests\install.ps1 $($Install.id)"
               }; 
             }
           }
@@ -61,4 +61,6 @@ jobs:
     name: ${{ matrix.name }}
 
     steps:
+      - uses: actions/checkout@v4
+
       - run: ${{ matrix.run }}
