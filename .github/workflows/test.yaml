@@ -45,10 +45,12 @@ jobs:
             }
           }
           
-          $IncludeJSON = $Include | ConvertTo-JSON;
-          echo $IncludeJSON;
+          $Matrix = @{ include = $Include } | ConvertTo-JSON;
           
-          $JSON = 'matrix={"include": $IncludeJSON}';
+          $MatrixJSON = $Include | ConvertTo-JSON;
+          echo $MatrixJSON;
+          
+          $JSON = 'matrix=$MatrixJSON';
           echo $JSON;
           echo $JSON | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8;
 
