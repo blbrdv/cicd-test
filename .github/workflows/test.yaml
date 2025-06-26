@@ -46,7 +46,7 @@ jobs:
           }
           
           $Matrix = @{ include = $Include } | ConvertTo-JSON;
-          $JSON = "matrix=$($Matrix -remove '\n')";
+          $JSON = "matrix=$($Matrix -replace '\n')";
 
           echo $JSON;
           echo $JSON | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8;
