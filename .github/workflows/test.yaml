@@ -27,9 +27,9 @@ jobs:
     strategy:
       matrix: ${{ fromJson( needs.build.outputs.matrix ) }}
 
-    runs-on: ${{ matrix.target.label }}
+    runs-on: ${{ matrix.label }}
 
-    name: "'${{ matrix.target.scenario }}' on ${{ matrix.target.name }}"
+    name: "'${{ matrix.scenario }}' on ${{ matrix.name }}"
 
     steps:
-      - run: echo "${{ matrix.target.scenario }} ${{ matrix.target.id }}"
+      - run: echo "${{ matrix.scenario }} ${{ matrix.id }}"
