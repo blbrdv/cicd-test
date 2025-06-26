@@ -45,7 +45,7 @@ jobs:
             }
           }
           
-          $Matrix = @{ include = $Include } | ConvertTo-JSON;
+          $Matrix = @{ include = $Include };
           
           $MatrixJSON = $Include | ConvertTo-JSON;
           echo $MatrixJSON;
