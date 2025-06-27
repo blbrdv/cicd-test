@@ -7,12 +7,8 @@ on:
       - "main"
 
 jobs:
-
   build:
     runs-on: windows-latest
-
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
 
     steps:
       - uses: actions/checkout@v4
@@ -35,6 +31,15 @@ jobs:
         with:
           name: build
           path: output
+
+  generation:
+    runs-on: windows-latest
+
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Generating matrix
         id: set-matrix
@@ -66,16 +71,16 @@ jobs:
           
           $Matrix = (@{ include = $Include } | ConvertTo-JSON) -replace '\n';
           $JSON = "matrix=$Matrix";
-
+          
           echo $JSON;
           echo $JSON | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8;
 
   test:
-    needs: build
+    needs: [build, generation]
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson( needs.build.outputs.matrix ) }}
+      matrix: ${{ fromJson( needs.generation.outputs.matrix ) }}
 
     runs-on: ${{ matrix.label }}
 
