@@ -16,8 +16,28 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          repository: 'blbrdv/ezstore'
+          ref: 'debug'
+          fetch-depth: 0
 
-      - id: set-matrix
+      - name: Setup GO
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          cache: true
+
+      - name: Build project
+        run: .\run.ps1 build
+
+      - name: Upload app
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: output
+
+      - name: Generating matrix
+        id: set-matrix
         run: |
           $Data = Get-Content -Raw '.\.github\matrix.json' | ConvertFrom-Json;
           $Include = @();
@@ -65,9 +85,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Download app
-        run: |
-          Invoke-WebRequest -Uri "https://github.com/blbrdv/ezstore/releases/download/v1.3.3/ezstore-portable.7z" -OutFile a.7z
-          7z x a.7z
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: output
 
       - name: Running scenario
         run: ${{ matrix.run }}
