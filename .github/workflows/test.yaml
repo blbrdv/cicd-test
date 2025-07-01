@@ -75,6 +75,16 @@ jobs:
       - name: Build project
         run: .\run.ps1 build
 
+      - name: Save cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ~\go
+            ~\AppData\Local\go-build
+            %USERPROFILE%\magefile
+          key: ${{ runner.os }}-${{ runner.arch }}-go-${{ hashFiles('.\go.mod', '.\.mage\go.mod') }}
+
       - name: Upload app
         uses: actions/upload-artifact@v4
         with:
