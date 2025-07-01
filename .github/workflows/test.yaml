@@ -17,11 +17,33 @@ jobs:
           ref: 'debug'
           fetch-depth: 0
 
+      - name: Restore cache
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ~\go
+            ~\AppData\Local\go-build
+            %USERPROFILE%\magefile
+          key: ${{ runner.os }}-${{ runner.arch }}-go-${{ hashFiles('.\go.mod', '.\.mage\go.mod') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-go-
+
       - name: Setup GO
+        if: steps.cache.outputs.cache-hit != 'true'
         uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-          cache: true
+          cache: false
+
+      - name: Download dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          cd .mage
+          go mod download -x
+          cd ..
+          go mod download -x
 
       - name: Build project
         run: .\run.ps1 build
