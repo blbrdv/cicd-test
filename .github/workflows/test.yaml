@@ -33,16 +33,21 @@ jobs:
         name: Check if need Go installation
         shell: pwsh
         run: |
-          $NeedInstall = 'false';
+          $NeedInstall = 'true';
           
           try {
-            $GoOutput = (& go version) -match '^go version (go)?([.0-9]+)';
+            $GoOutput = & go version;
+            echo $GoOutput; 
+            $GoOutput -match '^go version (go)?([.0-9]+)';
+            echo $Matches;
             $GoInstalledVersion = $Matches[2];
+            echo $GoInstalledVersion;
 
             $GoNeededVersion = & go list -f '{{.GoVersion}}' -m;
+            echo $GoNeededVersion;
 
-            if ( $GoNeededVersion -ne $GoInstalledVersion ) {
-              $NeedInstall = 'true'
+            if ( $GoNeededVersion -eq $GoInstalledVersion ) {
+              $NeedInstall = 'false'
             }
           } finally {
             $Output = "need-install=$NeedInstall";
