@@ -30,6 +30,7 @@ jobs:
             ${{ runner.os }}-${{ runner.arch }}-go-
 
       - id: go
+        name: Check if need Go installation
         shell: pwsh
         run: |
           $NeedInstall = 'false';
@@ -40,7 +41,7 @@ jobs:
 
             $GoNeededVersion = & go list -f '{{.GoVersion}}' -m;
 
-            if ( $GoNeededVersion -ne %GoInstalledVersion ) {
+            if ( $GoNeededVersion -ne $GoInstalledVersion ) {
               $NeedInstall = 'true'
             }
           } finally {
