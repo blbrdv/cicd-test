@@ -111,7 +111,7 @@ jobs:
               if ( $Target.label -eq $Os.label ) {
                 $Include += @{
                   label = $Os.label
-                  name = "'$($Target.scenario)'on $($Os.name)"
+                  name = "'$($Target.scenario)' on $($Os.name)"
                   run = ".\tests\$($Target.scenario).ps1"
                 };
               }
