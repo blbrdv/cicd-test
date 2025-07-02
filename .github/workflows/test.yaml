@@ -15,7 +15,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - id: ref
+      - name: Setting target ref
+        id: ref
         run: |
           if ( "true" -eq "${{ inputs.target-ref == '' }}" ) {
             $Ref = "main";
