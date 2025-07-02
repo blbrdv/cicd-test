@@ -55,10 +55,10 @@ jobs:
           try {
             (& go version) -match '^go version (go)?([.0-9]+)' > $null;
             $GoInstalledVersion = $Matches[2];
-            echo "Go installed version: $GoInstalledVersion";
+            echo "Go installed version: '$GoInstalledVersion'";
           
             $GoNeededVersion = & go list -f '{{.GoVersion}}' -m;
-            echo "Go needed version:    $GoNeededVersion";
+            echo "Go needed version:    '$GoNeededVersion'";
           
             if ( $GoNeededVersion -eq $GoInstalledVersion ) {
               $NeedInstall = 'false';
@@ -79,14 +79,15 @@ jobs:
           go-version-file: 'go.mod'
           cache: false
 
-      # TODO: cd to golangci-lint
       - name: Download dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           cd .mage
           go mod download -x
-          cd ..
+          cd golangci-lint
+          go mod download -x
+          cd ..\..
           go mod download -x
 
       - name: Build project
