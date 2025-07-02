@@ -17,7 +17,7 @@ jobs:
     steps:
       - id: ref
         run: |
-          if ( 'true' -eq ${{ inputs.target-ref == '' }} ) {
+          if ( 'true' -eq '${{ inputs.target-ref == '' }}' ) {
             $Ref = 'main';
           } else {
             $Ref = ${{ inputs.target-ref }}
