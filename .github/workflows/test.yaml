@@ -38,37 +38,38 @@ jobs:
         with:
           path: |
             ~\go
-            ~\AppData\Local\go-build
+            %LocalAppData%\go-build
+            %LocalAppData%\golangci-lint
             %USERPROFILE%\magefile
-          key: ${{ runner.os }}-${{ runner.arch }}-go-${{ hashFiles('.\go.mod', '.\.mage\go.mod') }}
+          key: ${{ runner.os }}-${{ runner.arch }}-go-${{ hashFiles('.\go.mod', '.\.mage\go.mod', '.\.mage\golangci-lint\go.mod') }}
           restore-keys: |
             ${{ runner.os }}-${{ runner.arch }}-go-
 
-      - id: go
-        name: Check if need Go installation
+      - name: Check if need Go installation
+        if: steps.cache.outputs.cache-hit != 'true'
+        id: go
         shell: pwsh
         run: |
           $NeedInstall = 'true';
           
           try {
-            $GoOutput = & go version;
-            echo $GoOutput; 
-            $GoOutput -match '^go version (go)?([.0-9]+)';
-            echo $Matches;
+            (& go version) -match '^go version (go)?([.0-9]+)' > $null;
             $GoInstalledVersion = $Matches[2];
-            echo $GoInstalledVersion;
-
+            echo "Go installed version: $GoInstalledVersion";
+          
             $GoNeededVersion = & go list -f '{{.GoVersion}}' -m;
-            echo $GoNeededVersion;
-
+            echo "Go needed version:    $GoNeededVersion";
+          
             if ( $GoNeededVersion -eq $GoInstalledVersion ) {
-              $NeedInstall = 'false'
+              $NeedInstall = 'false';
             }
           } finally {
-            $Output = "need-install=$NeedInstall";
-            
-            echo $Output;
-            echo $Output >> $env:GITHUB_OUTPUT;
+            if ( $NeedInstall -eq 'true' ) {
+              echo "Need to setup Go";
+            } else {
+              echo "No need for Go setup";
+            }
+            echo "need-install=$NeedInstall" >> $env:GITHUB_OUTPUT;
           }
 
       - name: Setup GO
@@ -84,21 +85,23 @@ jobs:
         run: |
           cd .mage
           go mod download -x
-          cd ..
+          cd golangci-lint
+          go mod download -x
+          cd ..\..
           go mod download -x
 
       - name: Build project
         run: .\run.ps1 build
 
       - name: Save cache
-        if: always()
         uses: actions/cache/save@v4
         with:
           path: |
             ~\go
-            ~\AppData\Local\go-build
+            %LocalAppData%\go-build
+            %LocalAppData%\golangci-lint
             %USERPROFILE%\magefile
-          key: ${{ runner.os }}-${{ runner.arch }}-go-${{ hashFiles('.\go.mod', '.\.mage\go.mod') }}
+          key: ${{ runner.os }}-${{ runner.arch }}-go-${{ hashFiles('.\go.mod', '.\.mage\go.mod', '.\.mage\golangci-lint\go.mod') }}
 
       - name: Upload app
         uses: actions/upload-artifact@v4
