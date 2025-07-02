@@ -54,7 +54,7 @@ $Targets = @{
     # 5 dependencies
     "9nksqgp7f2nh" = @{
         Name = "5319275A.WhatsAppDesktop"
-        Version = "2.2524.4.0"
+        Version = "2.2526.2.0"
     }
 
 };
