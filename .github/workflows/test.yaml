@@ -79,6 +79,7 @@ jobs:
           go-version-file: 'go.mod'
           cache: false
 
+      # TODO: cd to golangci-lint
       - name: Download dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         shell: pwsh
