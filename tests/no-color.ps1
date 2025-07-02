@@ -13,4 +13,4 @@ if ( $Output -match $ColorRegexp ) {
     throw 'Output has colors.';
 }
 
-Write-Host "Test passed!";
+Write-Output "Test passed!";
