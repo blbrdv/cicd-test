@@ -85,9 +85,10 @@ jobs:
         run: |
           cd .mage
           go mod download -x
-          cd golangci-lint
-          go mod download -x
-          cd ..\..
+#          cd golangci-lint
+#          go mod download -x
+#          cd ..\..
+          cd ..
           go mod download -x
 
       - name: Build project
