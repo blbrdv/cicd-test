@@ -2,6 +2,10 @@ name: 'Test'
 
 on:
   workflow_dispatch:
+    inputs:
+      target-ref:
+        description: The branch, tag or SHA to checkout.
+        type: string
   push:
     branches:
       - "main"
@@ -11,10 +15,20 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - id: ref
+        run: |
+          if ( 'true' -eq ${{ inputs.target-ref == '' }} ) {
+            $Ref = 'main';
+          } else {
+            $Ref = ${{ inputs.target-ref }}
+          }
+          echo "Ref is '$Ref'";
+          echo "target-ref=$Ref" >> $env:GITHUB_OUTPUT;
+
       - uses: actions/checkout@v4
         with:
           repository: 'blbrdv/ezstore'
-          ref: 'debug'
+          ref: ${{ steps.ref.outputs.target-ref }}
           fetch-depth: 0
 
       - name: Restore cache
