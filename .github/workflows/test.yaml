@@ -17,10 +17,10 @@ jobs:
     steps:
       - id: ref
         run: |
-          if ( 'true' -eq '${{ inputs.target-ref == '' }}' ) {
-            $Ref = 'main';
+          if ( "true" -eq "${{ inputs.target-ref == '' }}" ) {
+            $Ref = "main";
           } else {
-            $Ref = ${{ inputs.target-ref }}
+            $Ref = "${{ inputs.target-ref }}"
           }
           echo "Ref is '$Ref'";
           echo "target-ref=$Ref" >> $env:GITHUB_OUTPUT;
