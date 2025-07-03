@@ -1,6 +1,6 @@
 param (
     [Parameter(Mandatory=$true,Position=0)]
-    [hashtable]$Target
+    [string]$JSON
 )
 
 Set-StrictMode -Version 3.0;
@@ -8,6 +8,8 @@ $ErrorActionPreference = "Stop";
 trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 
 . ".\tests\_core.ps1";
+
+$Target = $JSON | ConvertFrom-Json;
 
 Install $Target.id $Target.version;
 
