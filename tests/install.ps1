@@ -1,6 +1,6 @@
 param (
     [Parameter(Mandatory=$true,Position=0)]
-    [string]$Id
+    [hashtable]$Target
 )
 
 Set-StrictMode -Version 3.0;
@@ -9,13 +9,7 @@ trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 
 . ".\tests\_core.ps1";
 
-$Target = $Targets[$Id];
-
-if ( $null -eq $Target ) {
-    throw "Unknow app ID: $Id"
-}
-
-Install $Id $Target.Version;
+Install $Target.Id $Target.Version;
 
 Import-Module -Name Appx -UseWindowsPowerShell -WarningAction SilentlyContinue;
 
