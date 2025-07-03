@@ -11,7 +11,7 @@ trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 
 $Target = $JSON | ConvertFrom-Json;
 
-Install $Target.id $Target.version;
+Install $Target.id $Target.version > $null;
 
 Import-Module -Name Appx -UseWindowsPowerShell -WarningAction SilentlyContinue;
 
