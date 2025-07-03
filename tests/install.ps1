@@ -9,18 +9,18 @@ trap { Write-Error $_ -ErrorAction Continue; exit 1 };
 
 . ".\tests\_core.ps1";
 
-Install $Target.Id $Target.Version;
+Install $Target.id $Target.version;
 
 Import-Module -Name Appx -UseWindowsPowerShell -WarningAction SilentlyContinue;
 
-$Package = Get-AppxPackage -Name $Target.Name;
+$Package = Get-AppxPackage -Name $Target.name;
 
 if ( $null -eq $Package ) {
-    throw "Package $($Target.Name) not installed";
+    throw "Package $($Target.name) not installed";
 }
 
-if ( $Package.Version -ne $Target.Version ) {
-    throw "Wrong version installed. Expected $($Target.Version), actual: $($Package.Version)."
+if ( $Package.Version -ne $Target.version ) {
+    throw "Wrong version installed. Expected $($Target.version), actual: $($Package.Version)."
 }
 
 Write-Output "Test passed!";
