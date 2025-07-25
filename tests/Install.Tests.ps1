@@ -41,10 +41,12 @@ Describe "Install subcommand (<arch>)" -ForEach $Targets {
     }
 
     It "Successfully install withput output color" {
-        $OldColor = $Env:NO_COLOR;
-        $Env:NO_COLOR = "1";
-        $Output, $Code = Install $Path "9mvsm3j7zj7c" "1.1.0.0";
-        $Env:NO_COLOR = $OldColor;
+        try {
+            $OldValue = $Env:NO_COLOR; $Env:NO_COLOR = "1";
+            $Output, $Code = Install $Path "9mvsm3j7zj7c" "1.1.0.0";
+        } finally {
+            $Env:NO_COLOR = $OldValue;
+        }
 
         $Code | Should -Be 0;
         $Output[0] | Should -Not -Match $ColorRegexp;
