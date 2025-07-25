@@ -15,6 +15,23 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Setting target ref
+        id: ref
+        run: |
+          if ( "true" -eq "${{ inputs.target-ref == '' }}" ) {
+            $Ref = "main";
+          } else {
+            $Ref = "${{ inputs.target-ref }}"
+          }
+          echo "Ref is '$Ref'";
+          echo "target-ref=$Ref" >> $env:GITHUB_OUTPUT;
+
+      - uses: actions/checkout@v4
+        with:
+          repository: 'blbrdv/ezstore'
+          ref: ${{ steps.ref.outputs.target-ref }}
+          fetch-depth: 0
+
       - id: cache
         uses: actions/cache/restore@v4
         with:
