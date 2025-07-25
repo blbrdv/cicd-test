@@ -24,12 +24,7 @@ function Exec-Ezstore {
 
     $global:LASTEXITCODE = $null;
 
-    $Path = [IO.Path]::Combine((Get-Location).Path.Trim(), $Path.Trim()).Replace('\.','');
-#     $Driver = $Path.SubString(0, 1);
-#
-#     if ( -Not (Test-Path "$Driver:\") ) {
-#         net use X: \\NDRIVE01\Svcs_FG
-#     }
+    $Path = [IO.Path]::Combine((Get-Location).Path, $Path).Replace('\.','');
 
     try {
         Push-Location;
