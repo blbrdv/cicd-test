@@ -102,7 +102,7 @@ function Import-Module-Adhog {
 $Targets = $Archs -split "," | ForEach-Object {
     @{
         Arch = $_
-        Path = "$Path$_\bin"
+        Path = [IO.Path]::Combine($Path, $_, "bin")
     }
 };
 
