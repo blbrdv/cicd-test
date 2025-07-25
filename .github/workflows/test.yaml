@@ -143,4 +143,4 @@ jobs:
           path: output
 
       - name: Running scenario
-        run: .\tests\All.ps1 -Path ${{ matrix.path }} -Archs ${{ matrix.archs }}
+        run: .\tests\All.ps1 -Path "${{ matrix.path }}" -Archs "${{ matrix.archs }}"
