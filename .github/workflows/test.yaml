@@ -86,6 +86,8 @@ jobs:
         run: .\run.ps1 help > $null;
 
       - name: Build project
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: pwsh
         run: |
           $NeedBuild = $true;
