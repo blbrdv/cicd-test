@@ -86,7 +86,28 @@ jobs:
         run: .\run.ps1 help > $null;
 
       - name: Build project
-        run: .\run.ps1 build
+        shell: pwsh
+        run: |
+          $NeedBuild = $true;
+          
+          try {
+            $LastWorkflow = gh run list --json databaseId,headSha --workflow test.yaml --limit 1 | ConvertFrom-Json;
+            echo $LastWorkflow;
+            $CurrentHeadSha = git rev-parse HEAD;
+            echo "Current HEAD sha: '$CurrentHeadSha'";
+            
+            if ( $LastWorkflow.headSha -eq $CurrentHeadSha ) {
+              gh run download $LastWorkflow.databaseId -n build -d output;
+              ls .\output;
+              $NeedBuild = $false;
+            }
+          } catch {
+            Write-Error $_;
+          }
+          
+          if ( $NeedBuild ) {
+            .\run.ps1 build
+          }
 
       - uses: actions/cache/save@v4
         with:
