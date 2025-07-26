@@ -1,14 +1,12 @@
 BeforeAll {
 
-    if ( "" -eq $Version ) {
-        Push-Location;
-        Set-Location $PSScriptRoot\..;
+    Push-Location;
+    Set-Location $PSScriptRoot\..;
 
-        try {
-            $Version = ((git describe --tags --abbrev=0) -split [Environment]::NewLine | Select -First 1) -replace "v";
-        } finally {
-            Pop-Location;
-        }
+    try {
+        $Version = ((git describe --tags --abbrev=0) -split [Environment]::NewLine | Select -First 1) -replace "v";
+    } finally {
+        Pop-Location;
     }
 
 }
@@ -19,7 +17,7 @@ Describe "Version flag (<arch>)" -ForEach $Targets {
         "-v"
         "--version"
     ) {
-        $Output, $Code = Exec-Ezstore $Path $_;
+        $Output, $Code = Invoke-Ezstore $Path $_;
 
         $Code | Should -Be 0;
         $Output.Count | Should -Be 1;

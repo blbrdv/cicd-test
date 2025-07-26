@@ -22,8 +22,8 @@ $Targets = $Archs -split "," | ForEach-Object {
     }
 };
 
-Install-Module-Force -Name "Pester" -Version "5.7.1";
-Import-Module-Adhog -Name "Pester" -Version "5.7.1";
+Import-ModuleSafe -Name "Pester" -Version "5.7.1";
+Import-ModuleSafe-Name "Pester" -Version "5.7.1";
 
 # For some reason default glob search in New-PesterContainer Path parameter didn't work for me so using Get-ChildItem
 $Containers = Get-ChildItem -Path $PSScriptRoot -Filter "*.Tests.ps1" -ErrorAction 'SilentlyContinue'

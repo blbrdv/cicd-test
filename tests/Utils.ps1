@@ -1,4 +1,4 @@
-function Exec-Ezstore {
+function Invoke-Ezstore {
 
     param(
         [Parameter(Mandatory=$true,Position=0)]
@@ -27,7 +27,7 @@ function Exec-Ezstore {
 
 }
 
-function Install-Module-Force {
+function Install-ModuleSafe {
 
     param(
         [Parameter(Mandatory=$true)]
@@ -36,25 +36,22 @@ function Install-Module-Force {
         [string] $Version
     )
 
-    if ( "" -eq $Version ) {
-        & {
-            $ProgressPreference = 'Ignore';
+    & {
+        $ProgressPreference = 'Ignore';
+
+        if ( "" -eq $Version ) {
             Install-Module -Name $Name -SkipPublisherCheck -Force 3>$null;
-        }
-    } else {
-        if ( $null -eq (Get-Module -ListAvailable -Name $Name | Where-object Version -ge $Version) ) {
-            & {
-                $ProgressPreference = 'Ignore';
+        } else {
+            if ( $null -eq (Get-Module -ListAvailable -Name $Name | Where-object Version -ge $Version) ) {
                 Install-Module -Name $Name -MinimumVersion $Version -SkipPublisherCheck -Force 3>$null;
             }
         }
     }
 
-
 }
 
 # See https://github.com/PowerShell/PowerShell/issues/13138#issuecomment-1820195503
-function Import-Module-Adhog {
+function Import-ModuleSafe {
 
     param(
         [Parameter(Mandatory=$true)]
@@ -63,15 +60,13 @@ function Import-Module-Adhog {
         [string] $Version
     )
 
-    if ( "" -eq $Version ) {
-        & {
-            $ProgressPreference = 'Ignore';
+    & {
+        $ProgressPreference = 'Ignore';
+
+        if ( "" -eq $Version ) {
             Import-Module -Name $Name -UseWindowsPowerShell 3>$null;
-        }
-    } else {
-        if ( $null -eq (Get-Module -ListAvailable -Name $Name | Where-object Version -ge $Version) ) {
-            & {
-                $ProgressPreference = 'Ignore';
+        } else {
+            if ( $null -eq (Get-Module -ListAvailable -Name $Name | Where-object Version -ge $Version) ) {
                 Import-Module -Name $Name -MinimumVersion $Version -UseWindowsPowerShell 3>$null;
             }
         }

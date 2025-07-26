@@ -1,4 +1,4 @@
-function Install {
+function Invoke-EzstoreInstall {
 
     param(
         [Parameter(Mandatory=$true,Position=0)]
@@ -9,5 +9,5 @@ function Install {
         [string] $Version
     )
 
-    return Exec-Ezstore $Path "install $Id --version $Version --verbosity d";
+    return Invoke-Ezstore $Path "install $Id --version $Version --verbosity d";
 }

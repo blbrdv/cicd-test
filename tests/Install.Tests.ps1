@@ -34,7 +34,7 @@ Describe "Install subcommand (<arch>)" -ForEach $Targets {
             Version = "1.0.20.0"
         }
     ) {
-        $Output, $Code = Install $Path $Id $Version;
+        $Output, $Code = Invoke-EzstoreInstall $Path $Id $Version;
 
         $Code | Should -Be 0;
         $Output | Select -Last 2 | Select -First 1 | Should -Match $PackageInstalledRegexp;
@@ -43,7 +43,7 @@ Describe "Install subcommand (<arch>)" -ForEach $Targets {
     It "Successfully install withput output color" {
         try {
             $OldValue = $Env:NO_COLOR; $Env:NO_COLOR = "1";
-            $Output, $Code = Install $Path "9mvsm3j7zj7c" "1.1.0.0";
+            $Output, $Code = Invoke-EzstoreInstall $Path "9mvsm3j7zj7c" "1.1.0.0";
         } finally {
             $Env:NO_COLOR = $OldValue;
         }
@@ -56,7 +56,7 @@ Describe "Install subcommand (<arch>)" -ForEach $Targets {
         $Id = "f1o2o3b4a5r6";
         $Expected = '[ERR] Finished with error: can not fetch product info: product with id "' + $Id + '" and locale "en-US" not found';
 
-        $Output, $Code = Install $Path $Id "1.0.0.0";
+        $Output, $Code = Invoke-EzstoreInstall $Path $Id "1.0.0.0";
 
         $Code | Should -Be 1;
         ($Output | Select -Last 1) -replace $ColorRegexp | Should -BeExactly $Expected;
