@@ -7,8 +7,11 @@ on:
       - "main"
 
 jobs:
-  target:
+  debug-386:
+    name: "386"
+
     runs-on: windows-11-arm
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,3 +30,27 @@ jobs:
 
       - name: Run
         run: .\output\386\bin\ezstore.exe install foo123 --ver 1.0.0 --verbosity d 2>&1;
+
+  debug-arm:
+    name: arm
+
+    runs-on: windows-11-arm
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: 'blbrdv/ezstore'
+          ref: 'bugfix/old_os_support'
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        name: Setup
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+
+      - name: Build project
+        run: .\run.ps1 --arch arm build
+
+      - name: Run
+        run: .\output\arm\bin\ezstore.exe install foo123 --ver 1.0.0 --verbosity d 2>&1;
