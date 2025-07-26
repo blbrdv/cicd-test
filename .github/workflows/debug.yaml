@@ -8,12 +8,9 @@ on:
 
 jobs:
   target:
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     steps:
       - name: debug
         shell: pwsh
         run: |
-          $ProgressPreference = 'Ignore';
-          Get-Module -ListAvailable -Name Pester;
-          Import-Module -Name Pester -MinimumVersion "5.7.1" -Force -SkipEditionCheck;
-          [PesterConfiguration]::Default;
+          [System.Text.Encoding]::Default;
