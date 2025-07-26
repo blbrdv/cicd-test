@@ -15,5 +15,5 @@ jobs:
         run: |
           $ProgressPreference = 'Ignore';
           Get-Module -ListAvailable -Name Pester;
-          Import-Module -Name Pester -MinimumVersion "5.7.1" -Force -UseWindowsPowerShell -SkipEditionCheck';
+          Import-Module -Name Pester -MinimumVersion "5.7.1" -Force -UseWindowsPowerShell -SkipEditionCheck;
           [PesterConfiguration]::Default;
