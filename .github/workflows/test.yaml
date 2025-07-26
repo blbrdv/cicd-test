@@ -11,8 +11,11 @@ on:
       - "main"
 
 jobs:
-  build:
+  target:
     runs-on: windows-latest
+
+    outputs:
+      target-ref: ${{ steps.ref.outputs.target-ref }}
 
     steps:
       - name: Setting target ref
@@ -26,10 +29,16 @@ jobs:
           echo "Ref is '$Ref'";
           echo "target-ref=$Ref" >> $env:GITHUB_OUTPUT;
 
+  build:
+    runs-on: windows-latest
+
+    needs: target
+
+    steps:
       - uses: actions/checkout@v4
         with:
           repository: 'blbrdv/ezstore'
-          ref: ${{ steps.ref.outputs.target-ref }}
+          ref: ${{ needs.target.outputs.target-ref }}
           fetch-depth: 0
 
       - id: cache
@@ -97,7 +106,9 @@ jobs:
           path: output
 
   test:
-    needs: [build]
+    needs:
+      - target
+      - build
 
     strategy:
       fail-fast: false
@@ -122,6 +133,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          repository: 'blbrdv/ezstore'
+          ref: ${{ needs.target.outputs.target-ref }}
+          fetch-depth: 0
 
       - name: Download app
         uses: actions/download-artifact@v4
