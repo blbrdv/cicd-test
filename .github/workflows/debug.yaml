@@ -13,4 +13,4 @@ jobs:
       - name: debug
         shell: pwsh
         run: |
-          [System.Text.Encoding]::Default;
+          chcp;
