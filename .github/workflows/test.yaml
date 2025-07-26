@@ -6,9 +6,6 @@ on:
       target-ref:
         description: The branch, tag or SHA to checkout.
         type: string
-  push:
-    branches:
-      - "main"
 
 jobs:
   target:
