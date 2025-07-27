@@ -93,7 +93,13 @@ jobs:
           $NeedBuild = $true;
           
           try {
-            $LastWorkflow = gh run list --json databaseId,headSha --workflow test.yaml --limit 1 | ConvertFrom-Json;
+            $LastWorkflow = gh run list -R blbrdv/cicd-test --json databaseId,headSha --workflow test.yaml --limit 1 
+              | ConvertFrom-Json;
+          
+            if ( $global:LASTEXITCODE -ne 0 ) {
+              throw $LastWorkflow;
+            }
+          
             echo $LastWorkflow;
             $CurrentHeadSha = git rev-parse HEAD;
             echo "Current HEAD sha: '$CurrentHeadSha'";
