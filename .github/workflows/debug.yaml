@@ -31,5 +31,12 @@ jobs:
       - name: Build project
         run: .\run.ps1 --arch ${{ matrix.arch }} build
 
+      - name: Fix Windows 11 shenanigans
+        if: '${{ matrix.label }}' == 'windows-11-arm'
+        run: |
+          dism /online /enable-feature /featurename:netfx3 /all
+          dism /online /enable-feature /featurename:WCF-HTTP-Activation
+          dism /online /enable-feature /featurename:WCF-NonHTTP-Activation
+
       - name: Run
         run: .\output\${{ matrix.arch }}\bin\ezstore.exe install foo123 --ver 1.0.0 --verbosity d 2>&1;
