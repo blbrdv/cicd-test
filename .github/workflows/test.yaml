@@ -124,7 +124,7 @@ jobs:
             path: .\output
           - label: windows-11-arm
             name: Windows 11 ARM
-            archs: arm64,amd,amd64,386
+            archs: arm64,arm,amd64,386
             path: .\output
 
     runs-on: ${{ matrix.label }}
