@@ -33,10 +33,14 @@ jobs:
 
       - name: Fix Windows 11 shenanigans
         if: matrix.label == 'windows-11-arm'
+        shell: pwsh
         run: |
-          dism /online /enable-feature /featurename:netfx3 /all
-          dism /online /enable-feature /featurename:WCF-HTTP-Activation
-          dism /online /enable-feature /featurename:WCF-NonHTTP-Activation
+          & {
+            $ProgressPreference = 'Ignore';
+            dism /online /enable-feature /featurename:netfx3 /all;
+            dism /online /enable-feature /featurename:WCF-HTTP-Activation /all;
+            dism /online /enable-feature /featurename:WCF-NonHTTP-Activation /all;
+          }
 
       - name: Run
         run: .\output\${{ matrix.arch }}\bin\ezstore.exe install foo123 --ver 1.0.0 --verbosity d 2>&1;
