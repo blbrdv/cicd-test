@@ -89,36 +89,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         shell: pwsh
-        run: |
-          $NeedBuild = $true;
-          
-          try {
-            $LastWorkflow = gh run list -R blbrdv/cicd-test -s completed --json databaseId,headSha --workflow test.yaml -L 1 
-              | ConvertFrom-Json;
-          
-            if ( $global:LASTEXITCODE -ne 0 ) {
-              throw $LastWorkflow;
-            }
-          
-            $CurrentHeadSha = git rev-parse HEAD;
-            echo "Workflow run ID:`t'$($LastWorkflow.databaseId)'";
-            echo "Last HEAD SHA:`t'$($LastWorkflow.headSha)'";
-            echo "Current HEAD SHA:`t'$CurrentHeadSha'";
-            
-            if ( $LastWorkflow.headSha -eq $CurrentHeadSha ) {
-              gh run download $LastWorkflow.databaseId -n build -d output;
-              ls .\output;
-              $NeedBuild = $false;
-            }
-          } catch {
-            Write-Error $_;
-          }
-          
-          echo "Need build: $NeedBuild";
-          
-          if ( $NeedBuild ) {
-            .\run.ps1 build;
-          }
+        run: .\run.ps1 build;
 
       - uses: actions/cache/save@v4
         with:
