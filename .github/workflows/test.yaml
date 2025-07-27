@@ -145,4 +145,5 @@ jobs:
           path: output
 
       - name: Running scenario
+        shell: pwsh
         run: .\tests\All.ps1 -Path "${{ matrix.path }}" -Archs "${{ matrix.archs }}"
