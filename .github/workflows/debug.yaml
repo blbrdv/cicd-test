@@ -32,7 +32,7 @@ jobs:
         run: .\run.ps1 --arch ${{ matrix.arch }} build
 
       - name: Fix Windows 11 shenanigans
-        if: '${{ matrix.label }}' == 'windows-11-arm'
+        if: matrix.label == 'windows-11-arm'
         run: |
           dism /online /enable-feature /featurename:netfx3 /all
           dism /online /enable-feature /featurename:WCF-HTTP-Activation
