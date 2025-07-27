@@ -122,11 +122,9 @@ jobs:
             name: Windows 10 2025 x64
             archs: amd64,386
             path: .\output
-          # 386 and ARM architectures removed from list due to this issue
-          # https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-21h2#2819msgdesc
           - label: windows-11-arm
             name: Windows 11 ARM
-            archs: arm64,amd64
+            archs: arm64,amd,amd64,386
             path: .\output
 
     runs-on: ${{ matrix.label }}
