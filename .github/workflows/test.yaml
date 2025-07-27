@@ -149,6 +149,6 @@ jobs:
           name: build
           path: output
 
-      - name: Running scenario
+      - name: Running tests
         shell: pwsh
         run: .\tests\All.ps1 -Path "${{ matrix.path }}" -Archs "${{ matrix.archs }}"${{ matrix.skip }}
