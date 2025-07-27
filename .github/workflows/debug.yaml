@@ -2,39 +2,18 @@ name: 'Debug'
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - "main"
 
 jobs:
-  debug-386:
-    name: "386"
+  debug:
+    strategy:
+      fail-fast: false
+      matrix:
+        label: [ windows-11-arm ]
+        arch: [ "386", arm ]
 
-    runs-on: windows-11-arm
+    runs-on: ${{ matrix.label }}
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: 'blbrdv/ezstore'
-          ref: 'bugfix/old_os_support'
-          fetch-depth: 0
-
-      - uses: actions/setup-go@v5
-        name: Setup
-        with:
-          go-version-file: 'go.mod'
-          cache: false
-
-      - name: Build project
-        run: .\run.ps1 --arch 386 build
-
-      - name: Run
-        run: .\output\386\bin\ezstore.exe install foo123 --ver 1.0.0 --verbosity d 2>&1;
-
-  debug-arm:
-    name: arm
-
-    runs-on: windows-11-arm
+    name: ${{ matrix.arch }} | ${{ matrix.label }}
 
     steps:
       - uses: actions/checkout@v4
@@ -50,7 +29,7 @@ jobs:
           cache: false
 
       - name: Build project
-        run: .\run.ps1 --arch arm build
+        run: .\run.ps1 --arch ${{ matrix.arch }} build
 
       - name: Run
-        run: .\output\arm\bin\ezstore.exe install foo123 --ver 1.0.0 --verbosity d 2>&1;
+        run: .\output\${{ matrix.arch }}\bin\ezstore.exe install foo123 --ver 1.0.0 --verbosity d 2>&1;
