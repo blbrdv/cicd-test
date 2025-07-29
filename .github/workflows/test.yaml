@@ -130,7 +130,7 @@ jobs:
             name: Windows 11 ARM
             archs: arm,386
             path: .\output
-            skip: " -SkipInstallTests"
+            skip: ' -ExcludeTags "Install"'
 
     runs-on: ${{ matrix.label }}
 
