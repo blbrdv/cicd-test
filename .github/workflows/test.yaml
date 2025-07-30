@@ -126,11 +126,6 @@ jobs:
             name: Windows 11 ARM
             archs: arm64,amd64
             path: .\output
-          - label: windows-11-arm
-            name: Windows 11 ARM
-            archs: arm,386
-            path: .\output
-            skip: ' -ExcludeTags "Install"'
 
     runs-on: ${{ matrix.label }}
 
