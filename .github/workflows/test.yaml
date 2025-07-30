@@ -149,6 +149,13 @@ jobs:
           name: build
           path: output
 
+      - name: OS info
+        shell: pwsh
+        run: |
+          $Version = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+          echo "Display version:`t$($Version.DisplayVersion)";
+          echo "Build:`t[Environment]::OSVersion.Version.Build";
+
       - name: Running tests
         shell: pwsh
         run: .\tests\All.ps1 -Path "${{ matrix.path }}" -Archs "${{ matrix.archs }}"${{ matrix.skip }}
