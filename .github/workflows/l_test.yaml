@@ -1,0 +1,167 @@
+name: 'Linux test'
+
+on:
+  workflow_dispatch:
+    inputs:
+      target-ref:
+        description: The branch, tag or SHA to checkout.
+        type: string
+
+jobs:
+  target:
+    runs-on: ubuntu-latest
+
+    outputs:
+      target-ref: ${{ steps.ref.outputs.target-ref }}
+
+    steps:
+      - name: Setting target ref
+        id: ref
+        shell: bash
+        run: |
+          if [ "true" = "${{ inputs.target-ref == '' }}" ]
+          then
+            ref="main"
+          else
+            ref="${{ inputs.target-ref }}"
+          fi
+          
+          echo "Ref: $ref"
+          echo "target-ref=$ref" >> "$GITHUB_OUTPUT"
+
+  build:
+    runs-on: ubuntu-latest
+
+    needs: target
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: 'blbrdv/ezstore'
+          ref: ${{ needs.target.outputs.target-ref }}
+          fetch-depth: 0
+
+      - id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ~/go
+            ~/.cache/go-build
+            ~/.cache/golangci-lint
+          key: ${{ runner.os }}-${{ runner.arch }}-go-${{ hashFiles('.\go.mod', '.\.build\go.mod', '.\.build\golangci-lint\go.mod') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-go-
+
+      - if: steps.cache.outputs.cache-hit != 'true'
+        id: go
+        shell: bash
+        run: |
+          needInstall = "true"
+          
+          (
+            version = go version || exit -1
+            if [[ "$version" =~ "^go version (go)?([.0-9]+)" ]]
+            then
+              goInstalledVersion = ${BASH_REMATCH[1]}
+              echo "Go installed version: '$goInstalledVersion'"
+            else
+              exit -2
+            fi
+          
+            $goNeededVersion = & go list -f '{{.GoVersion}}' -m || exit -3
+            echo "Go needed version:    '$goNeededVersion'";
+          
+            if [ "$goInstalledVersion" = "$goNeededVersion" ]
+            then
+              needInstall = "false"
+            fi
+          )
+          
+          if [ "true" = "$needInstall" ]
+          then
+            echo "Need to setup Go"
+          else
+            echo "No need for Go setup"
+          fi
+          
+          echo "need-install=$needInstall" >> "$GITHUB_OUTPUT"
+
+      - if: steps.cache.outputs.cache-hit != 'true' && steps.go.outputs.need-install == 'true'
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+
+      - if: steps.cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: ./run.sh help &> /dev/null
+
+      - name: Build project
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: ./run.sh build
+
+      - uses: actions/cache/save@v4
+        with:
+          path: |
+            ~/go
+            ~/.cache/go-build
+            ~/.cache/golangci-lint
+          key: ${{ runner.os }}-${{ runner.arch }}-go-${{ hashFiles('.\go.mod', '.\.build\go.mod', '.\.build\golangci-lint\go.mod') }}
+
+      - name: Upload app
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: output
+
+  test:
+    needs:
+      - target
+      - build
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: windows-2022
+            name: Windows 10 2022 x64
+            archs: amd64,386
+            path: .\output
+          - label: windows-2025
+            name: Windows 10 2025 x64
+            archs: amd64,386
+            path: .\output
+          - label: windows-11-arm
+            name: Windows 11 ARM
+            archs: arm64,amd64
+            path: .\output
+
+    runs-on: ${{ matrix.label }}
+
+    name: ${{ matrix.archs }} | ${{ matrix.name }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: 'blbrdv/ezstore'
+          ref: ${{ needs.target.outputs.target-ref }}
+          fetch-depth: 0
+
+      - name: Download app
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: output
+
+      - name: OS info
+        shell: pwsh
+        run: |
+          $Version = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+          echo "Display version:`t$($Version.DisplayVersion)";
+          echo "Build:`t$([Environment]::OSVersion.Version.Build)";
+
+      - name: Running tests
+        shell: pwsh
+        run: .\tests\All.ps1 -Path "${{ matrix.path }}" -Archs "${{ matrix.archs }}"
