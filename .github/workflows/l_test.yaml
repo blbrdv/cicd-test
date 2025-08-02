@@ -56,24 +56,24 @@ jobs:
         id: go
         shell: bash
         run: |
-          needInstall = "true"
+          needInstall="true"
           
           (
-            version = go version || exit -1
+            version=`go version || exit -1`
             if [[ "$version" =~ "^go version (go)?([.0-9]+)" ]]
             then
-              goInstalledVersion = ${BASH_REMATCH[1]}
+              goInstalledVersion=${BASH_REMATCH[1]}
               echo "Go installed version: '$goInstalledVersion'"
             else
               exit -2
             fi
           
-            $goNeededVersion = & go list -f '{{.GoVersion}}' -m || exit -3
+            goNeededVersion=`go list -f '{{.GoVersion}}' -m || exit -3`
             echo "Go needed version:    '$goNeededVersion'";
           
             if [ "$goInstalledVersion" = "$goNeededVersion" ]
             then
-              needInstall = "false"
+              needInstall="false"
             fi
           )
           
