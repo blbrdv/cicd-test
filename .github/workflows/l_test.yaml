@@ -60,11 +60,12 @@ jobs:
           
           (
             version=`go version`
-            if [[ "$version" =~ "^go version (go)?([.0-9]+)" ]]
+            if [[ "$version" =~ ([.0-9]+) ]]
             then
-              goInstalledVersion=${BASH_REMATCH[1]}
+              goInstalledVersion=${BASH_REMATCH[0]}
               echo "Go installed version: '$goInstalledVersion'"
             else
+              echo "No go version"
               exit -3
             fi
           
